@@ -1,0 +1,88 @@
+{
+  "theme_name": "The Modern Indian Bazaar",
+  "design_philosophy": "A sophisticated, editorial take on Indian e-commerce. Avoids the standard 'Amazon/Flipkart' template. Uses high-contrast structural layouts (bento grids), crisp 1px borders, and vibrant culturally resonant accents (Indigo, Marigold) grounded on an organic, airy off-white canvas.",
+  "target_audience": "Modern Indian shoppers looking for a premium yet approachable buying experience.",
+  "colors": {
+    "background": "#F8F7F4",
+    "foreground": "#0A0A0A",
+    "primary": "#4F46E5",
+    "primary_hover": "#4338CA",
+    "primary_foreground": "#FFFFFF",
+    "accent_vibrant": "#F59E0B",
+    "accent_vibrant_hover": "#D97706",
+    "surface": "#FFFFFF",
+    "surface_alt": "#F3F4F6",
+    "border": "#E5E7EB",
+    "text_muted": "#6B7280",
+    "success": "#10B981",
+    "error": "#EF4444"
+  },
+  "typography": {
+    "heading_font": "Cabinet Grotesk, Outfit, sans-serif",
+    "body_font": "Manrope, sans-serif",
+    "rules": [
+      "Use 'tracking-tight' for H1 and H2",
+      "Do NOT exceed text-6xl for main hero headings. Ensure mobile headings are scaled down gracefully.",
+      "Overlines (e.g., category labels) must be uppercase, text-xs or text-sm, and tracking-[0.2em].",
+      "Prices must use a slightly bolder weight and Indian number formatting (e.g. ₹1,29,999)."
+    ]
+  },
+  "layouts": {
+    "homepage": "Bento-grid (Tetris style) for hero and featured categories to break the monotony of standard sliders. Use wide gaps (gap-6 or gap-8).",
+    "plp_product_listing_page": "High-density grid (grid-cols-2 mobile, grid-cols-4 desktop). Products must have crisp 1px borders instead of floating soft shadows. Use uniform aspect ratios for product images (e.g. aspect-[4/5] for fashion, aspect-square for electronics).",
+    "pdp_product_detail_page": "Asymmetrical layout. Sticky left column for massive, high-res image gallery. Scrolling right column for product details, sticky 'Add to Cart' bar on mobile.",
+    "cart_checkout": "Focus strictly on usability. One-column minimal layout on mobile, two-column on desktop. Suppress unnecessary navigation during checkout to minimize drop-off."
+  },
+  "component_guidelines": {
+    "buttons": "Pill-shaped (rounded-full) or crisp slight curve (rounded-md). Solid high-contrast colors. Add 'hover:-translate-y-[2px]' and subtle shadow on hover.",
+    "cards": "Cardless approach where possible, or use flat surface with 1px border. No muddy drop shadows. On hover, darken border and add slight elevation.",
+    "inputs": "Shadcn standard but customized to have rounded-md, ring-offset-background, focus:ring-primary. No native HTML inputs.",
+    "badges": "Used for 'Bestseller', 'X% Off'. Use vibrant accent color (Marigold/Saffron) with dark text for high visibility.",
+    "navigation": "Sticky glassmorphism header (backdrop-blur-xl bg-white/70) with 1px bottom border. Must include Logo, Search Bar, Account, Wishlist, Cart."
+  },
+  "motion": {
+    "hover": "Instant visual feedback. Micro-transitions on color and transform (e.g. duration-200 ease-out).",
+    "page_load": "Staggered fade-in for product grids.",
+    "cart_interaction": "When clicking 'Add to Cart', use a subtle pop animation or a toast notification from Sonner. Never interrupt user flow with a modal unless required."
+  },
+  "accessibility": {
+    "contrast": "Ensure all text, especially text_muted, passes APCA contrast checks against background.",
+    "testing": "All interactive elements MUST include a `data-testid` attribute (e.g. `data-testid='add-to-cart-btn'`).",
+    "focus": "Clear focus rings on all inputs and buttons."
+  },
+  "images": {
+    "hero_fashion": {
+      "url": "https://images.pexels.com/photos/5639235/pexels-photo-5639235.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+      "description": "Vibrant fashion lifestyle model. Use for Hero Banner or Fashion Category."
+    },
+    "category_electronics": {
+      "url": "https://images.pexels.com/photos/32912307/pexels-photo-32912307.jpeg",
+      "description": "Minimalist tech gadgets. Use for Electronics Category banner or featured tech."
+    },
+    "category_beauty": {
+      "url": "https://images.unsplash.com/photo-1600428853876-fb5a850b444f",
+      "description": "Skincare product flatlay. Use for Beauty & Wellness Category."
+    }
+  },
+  "instructions_to_main_agent": [
+    "Build a multi-page or multi-view React application based on the requested features.",
+    "Use standard Lucide React icons for UI elements.",
+    "Format ALL currency using INR (₹) and Indian numbering system (e.g., ₹1,50,000).",
+    "Avoid generic Bootstrap-like layouts. Use structural grids with 1px borders for a premium, clean look.",
+    "Ensure complete responsive behavior (Mobile-first).",
+    "Include dummy products across different categories to populate the PLP and Homepage.",
+    "Do not use generic blue/yellow clone colors. Stick to the refined color palette provided.",
+    "Create Shadcn components in 'src/components/ui' and modify them to fit the aesthetic.",
+    "For the 'Add to cart' flow, wire up a basic state context or mock it beautifully with toast notifications (Sonner)."
+  ],
+  "UNIVERSAL_GUIDELINES_FOR_MAIN_AGENT": [
+    "You tend to converge toward generic outputs. Avoid 'AI slop'. Make it distinct and beautiful.",
+    "Create depth through layered design elements with z-index hierarchy and glass-morphism.",
+    "Do NOT apply universal transitions (e.g. transition: all). Add explicit transitions.",
+    "Do NOT center align the app container (.App { text-align: center }).",
+    "Never use AI emoji characters for icons.",
+    "Use generous spacing (p-8, p-12 where appropriate). Cramped designs look cheap.",
+    "Add 'data-testid' to all key interactive elements.",
+    "Use sonner for toast notifications."
+  ]
+}

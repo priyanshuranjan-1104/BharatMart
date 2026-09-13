@@ -1,0 +1,53 @@
+{
+  "summary": "BharatMart e-commerce app tested end-to-end. 32/32 backend pytest cases pass (auth, products, cart, wishlist, orders, reviews). All major frontend flows verified: homepage with 6 categories & INR formatting, category filter, header search, PDP (price/MRP/discount/PIN/qty/Buy Now/Add to cart/reviews), login (test@bharatmart.in / test123), add-to-cart (login required), wishlist toggle & page, mock checkout with COD (order placed successfully — order ID generated, cart cleared, orders history populated), review submission (5-star + comment appears immediately), guest add-to-cart shows toast without modifying state, protected routes redirect to /login after logout. Minor React console warning found.",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [
+      {
+        "component": "Login",
+        "issue": "React console warning: 'Cannot update a component (BrowserRouter) while rendering a different component (Login).' — setState called during render (likely a Navigate/redirect during render). Not breaking flow, but should be moved inside useEffect.",
+        "selector": "/app/frontend/src/pages/Login.jsx",
+        "priority": "LOW"
+      },
+      {
+        "component": "Checkout - Payment method radios",
+        "issue": "The clickable label <div> (COD/UPI/CARD) intercepts pointer events for the underlying radio input, causing Playwright clicks on the radio to time out. Clicking the label works visually for humans (default COD is selected), but the radio itself is unreachable via direct programmatic click. Consider making label properly forward click to input or expose data-testid on each radio option.",
+        "selector": "input[name='payment']",
+        "priority": "LOW"
+      }
+    ],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [
+    "/app/backend/tests/backend_test.py",
+    "/app/test_reports/pytest/pytest_results.xml"
+  ],
+  "action_items": [
+    "OPTIONAL: Fix React setState-during-render warning in Login page (move redirect logic into useEffect).",
+    "OPTIONAL: Add data-testid on each payment-method radio (e.g., payment-cod, payment-upi, payment-card) so alternate payment methods can be selected in automated tests.",
+    "NOTE: Data-testid convention differs from review request. Actual used: detail-add-to-cart, detail-wishlist-toggle, ck-name/phone/line1/city/state/pincode (not add-to-cart-<id>, wishlist-toggle-<id>, checkout-*). This is consistent and works; just an FYI for future tests."
+  ],
+  "critical_code_review_comments": [
+    "server.py uses deprecated FastAPI @app.on_event('startup'/'shutdown') — should migrate to lifespan context manager in future FastAPI versions.",
+    "bcrypt hash verified via curl login — bcrypt hashes start with $2b$ as expected.",
+    "httpOnly cookies set correctly with secure=true, samesite=lax; login also returns Bearer token for header fallback (verified in tests).",
+    "CORS uses explicit origins from env var with allow_credentials=True — correct for cookie auth.",
+    "MongoDB ObjectId is never leaked in responses (verified in review, order, product responses — all use string id).",
+    "Cart shipping rule: FREE if subtotal >= ₹500 (also FREE if empty cart), else ₹49 — matches spec.",
+    "No brute-force lockout implemented (spec in playbook mentions lockout after 5 fails). Not in requirements list; low priority.",
+    "seed_admin correctly updates password_hash if changed (idempotent) — matches playbook requirement."
+  ],
+  "updated_files": [
+    "/app/backend/tests/backend_test.py"
+  ],
+  "success_rate": {"backend": "100% (32/32)", "frontend": "~95% (all critical flows pass)"},
+  "test_credentials": "test@bharatmart.in / test123 (seeded), admin@bharatmart.in / admin123 (seeded)",
+  "seed_data_creation": "Backend already seeds 29 products, 6 categories, 6 sample reviews, admin + test user on startup (idempotent).",
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "All 32 pytest cases in /app/backend/tests/backend_test.py pass. Data-testid inventory: header-search-input, header-cart-link, cart-badge, header-account-menu, nav-<category>, detail-add-to-cart, detail-buy-now, detail-wishlist-toggle, pincode-input/check, qty-increment/decrement/value, review-star-1..5, review-textarea, review-submit, cart-checkout-btn, ck-name/phone/line1/line2/city/state/pincode, place-order-btn, login-submit, register-submit. Checkout radio input for UPI/CARD is blocked by label overlay — use default COD or click the label div directly. Frontend has minor React setState-during-render warning in Login (non-blocking)."
+}
