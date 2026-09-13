@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useState } from "react";
+﻿import React, { createContext, useContext, useEffect, useState } from "react";
 import { api, formatApiError } from "@/lib/api";
 
 const AuthContext = createContext(null);
@@ -21,6 +21,9 @@ export function AuthProvider({ children }) {
   const login = async (email, password) => {
     try {
       const { data } = await api.post("/auth/login", { email, password });
+      if (data.token) {
+        localStorage.setItem("bharatmart_token", data.token);
+      }
       setUser(data.user);
       return { ok: true };
     } catch (e) {
@@ -31,6 +34,9 @@ export function AuthProvider({ children }) {
   const register = async (name, email, password) => {
     try {
       const { data } = await api.post("/auth/register", { name, email, password });
+      if (data.token) {
+        localStorage.setItem("bharatmart_token", data.token);
+      }
       setUser(data.user);
       return { ok: true };
     } catch (e) {
@@ -42,6 +48,7 @@ export function AuthProvider({ children }) {
     try {
       await api.post("/auth/logout");
     } catch {}
+    localStorage.removeItem("bharatmart_token");
     setUser(false);
   };
 
